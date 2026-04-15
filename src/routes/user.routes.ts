@@ -12,10 +12,10 @@ userRouter.get('/', listUsers);
 userRouter.get('/:id', getUser);
 
 // POST /api/user/users - Create a new user
-userRouter.post('/', validate(createUserSchema), createUser);
+userRouter.post('/', validate(createUserSchema, { abortEarly: true }), createUser);
 
 // PUT /api/user/users/:id - Update an existing user
-userRouter.put('/:id', validate(updateUserSchema), updateUser);
+userRouter.put('/:id', validate(updateUserSchema, { abortEarly: true }), updateUser);
 
 // DELETE /api/user/users/:id - Delete a user
 userRouter.delete('/:id', deleteUser);
