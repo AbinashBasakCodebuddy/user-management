@@ -15,7 +15,7 @@ export const createUser = async (req: Request, res: Response) => {
     }
 
     // create new user
-    const newUser = new UserModel(Date.now().toString(), name, email);
+    const newUser = new UserModel({ id: Date.now().toString(), name, email });
     const user = await newUser.create();
     res.status(STATUS_CODE.CREATED).json({ message: 'User created successfully', user });
 };

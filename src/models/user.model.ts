@@ -1,3 +1,5 @@
+import { User } from '../types/user.type';
+
 export class UserModel {
     id: string;
     name: string;
@@ -5,7 +7,7 @@ export class UserModel {
 
     static list: UserModel[] = [];
 
-    constructor(id: string, name: string, email: string) {
+    constructor({ id, name, email }: User) {
         this.id = id;
         this.name = name;
         this.email = email;
