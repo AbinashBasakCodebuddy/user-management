@@ -1,12 +1,10 @@
 import { Request, Response } from 'express';
 import { UserModel } from '../models/user.model';
 import { STATUS_CODE } from '../constants/statusCode.enum';
+import { User } from '../types/user.type';
 
 export const createUser = async (req: Request, res: Response) => {
-    const { name, email } = req.body;
-    if (!name || !email) {
-        return res.status(400).json({ message: 'Name and email are required' });
-    }
+    const { name, email } = req.body as User;
 
     // check if user already exists
     const existingUser = UserModel.findOne({ email });
@@ -35,7 +33,7 @@ export const getUser = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { name, email } = req.body;
+    const { name, email } = req.body as Partial<User>;
 
     const existingUser = await UserModel.getById(id as string);
 
