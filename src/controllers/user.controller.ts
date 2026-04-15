@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { UserModel } from '../models/user.model';
+import { STATUS_CODE } from '../constants/statusCode.enum';
 
 export const createUser = async (req: Request, res: Response) => {
     const { name, email } = req.body;
@@ -10,13 +11,13 @@ export const createUser = async (req: Request, res: Response) => {
     // check if user already exists
     const existingUser = UserModel.findOne({ email });
     if (existingUser) {
-        return res.status(409).json({ message: 'User with this email already exists' });
+        return res.status(STATUS_CODE.CONFLICT).json({ message: 'User with this email already exists' });
     }
 
     // create new user
     const newUser = new UserModel(Date.now().toString(), name, email);
     const user = await newUser.create();
-    res.status(201).json({ message: 'User created successfully', user });
+    res.status(STATUS_CODE.CREATED).json({ message: 'User created successfully', user });
 };
 
 export const getUser = async (req: Request, res: Response) => {
@@ -26,10 +27,10 @@ export const getUser = async (req: Request, res: Response) => {
 
     // user not found
     if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+        return res.status(STATUS_CODE.NOT_FOUND).json({ message: 'User not found' });
     }
 
-    return res.status(200).json({ message: 'User retrieved successfully', user });
+    return res.status(STATUS_CODE.OK).json({ message: 'User retrieved successfully', user });
 };
 
 export const updateUser = async (req: Request, res: Response) => {
@@ -40,7 +41,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
     // user not found
     if (!existingUser) {
-        return res.status(404).json({ message: 'User not found' });
+        return res.status(STATUS_CODE.NOT_FOUND).json({ message: 'User not found' });
     }
 
     // update user details
@@ -52,7 +53,7 @@ export const updateUser = async (req: Request, res: Response) => {
     }
     await existingUser.save();
 
-    res.status(200).json({ message: 'User updated successfully' });
+    res.status(STATUS_CODE.OK).json({ message: 'User updated successfully' });
 };
 
 export const deleteUser = async (req: Request, res: Response) => {
@@ -62,18 +63,18 @@ export const deleteUser = async (req: Request, res: Response) => {
 
     // user not found
     if (!existingUser) {
-        return res.status(404).json({ message: 'User not found' });
+        return res.status(STATUS_CODE.NOT_FOUND).json({ message: 'User not found' });
     }
 
     await UserModel.deleteById(id as string);
     // Here you would typically delete the user from a database using the id
-    res.status(200).json({ message: 'User deleted successfully' });
+    res.status(STATUS_CODE.OK).json({ message: 'User deleted successfully' });
 };
 
 export const listUsers = async (req: Request, res: Response) => {
     const users = await UserModel.listAll();
     // Here you would typically retrieve a list of users from a database
-    res.status(200).json({
+    res.status(STATUS_CODE.OK).json({
         message: 'Users retrieved successfully',
         users,
     });
