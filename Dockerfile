@@ -6,9 +6,10 @@ COPY package.json pnpm-lock.yaml ./
 
 RUN npm install -g pnpm 
 
-RUN pnpm install --prod && pnpm cache clean
+RUN pnpm install && pnpm cache clean
 
 COPY . .
+RUN pnpm run build
 
 EXPOSE 7777
 CMD ["node", "dist/index.js"]
