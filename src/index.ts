@@ -1,11 +1,15 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import dotenv from 'dotenv';
 import userRouter from './routes/user.routes';
 
 dotenv.config();
 
+import { validateEnv } from './validators/env.validators';
+
+const env = validateEnv();
+const PORT = env.PORT;
+
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
