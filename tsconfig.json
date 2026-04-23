@@ -27,5 +27,6 @@
     // Recommended Options
     "strict": true,
     "esModuleInterop": true,
+    "types": ["jest", "node"]
   }
 }
